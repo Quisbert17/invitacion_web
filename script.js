@@ -1,88 +1,87 @@
-// ===================== CONFIRMAR ASISTENCIA =====================
-function confirmar() {
-    // Creamos un pop-up elegante
-    const overlay = document.createElement('div');
-    overlay.style.position = 'fixed';
-    overlay.style.top = 0;
-    overlay.style.left = 0;
-    overlay.style.width = '100vw';
-    overlay.style.height = '100vh';
-    overlay.style.background = 'rgba(0,0,0,0.6)';
-    overlay.style.display = 'flex';
-    overlay.style.justifyContent = 'center';
-    overlay.style.alignItems = 'center';
-    overlay.style.zIndex = 1000;
+document.addEventListener('DOMContentLoaded', () => {
 
-    const modal = document.createElement('div');
-    modal.style.background = 'rgba(255,255,255,0.1)';
-    modal.style.backdropFilter = 'blur(10px)';
-    modal.style.padding = '30px';
-    modal.style.borderRadius = '20px';
-    modal.style.textAlign = 'center';
-    modal.style.color = '#FFD700';
-    modal.style.fontFamily = "'Playfair Display', serif";
-    modal.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
-    modal.innerHTML = `
-        <h2>🎉 Confirmado! 🎉</h2>
-        <p>¡Gracias por confirmar tu asistencia!</p>
-        <button id="cerrarBtn" style="
-            margin-top:20px;
-            padding:10px 20px;
-            border-radius:50px;
-            border:none;
-            cursor:pointer;
-            font-weight:bold;
-            background: linear-gradient(135deg,#FFD700,#FFB800);
-            color:#043915;
-            font-size:1rem;
-            transition: transform 0.3s ease;
-        ">Cerrar</button>
-    `;
+    // ===================== CONFIRMAR ASISTENCIA =====================
+    window.confirmar = function () {
 
-    overlay.appendChild(modal);
-    document.body.appendChild(overlay);
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.65);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        `;
 
-    // Confetti simple
-    lanzarConfetti();
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(12px);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            color: #FF6F00;
+            font-family: 'Playfair Display', serif;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.5);
+            max-width: 320px;
+            width: 90%;
+        `;
 
-    // Cerrar modal
-    document.getElementById('cerrarBtn').addEventListener('click', () => {
-        overlay.remove();
+        modal.innerHTML = `
+            <h2 style="margin-bottom:10px;">🍛 Confirmación</h2>
+            <p style="color:#fff; margin-bottom:20px;">
+                Gracias por confirmar tu asistencia<br>
+                a la noche de <strong>Chaufa</strong> 🇵🇪
+            </p>
+
+            <button id="whatsappBtn" style="
+                margin-bottom:10px;
+                padding:12px;
+                width:100%;
+                border-radius:50px;
+                border:none;
+                background: linear-gradient(135deg,#FF6F00,#FF6F00);
+                color:#fff;
+                font-weight:bold;
+                cursor:pointer;
+            ">
+                Confirmar por WhatsApp
+            </button>
+
+            <button id="cerrarBtn" style="
+                padding:10px;
+                width:100%;
+                border-radius:50px;
+                border:1px solid #FF6F00;
+                background: transparent;
+                color:#fff;
+                cursor:pointer;
+            ">
+                Cerrar
+            </button>
+        `;
+
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+
+        document.getElementById('cerrarBtn').onclick = () => overlay.remove();
+
+        document.getElementById('whatsappBtn').onclick = () => {
+            const mensaje = encodeURIComponent(
+                'Hola 👋 Confirmo mi asistencia a la noche de Chaufa  🍛🇵🇪'
+            );
+            window.open(
+                'https://wa.me/59177362339?text=' + mensaje,
+                '_blank'
+            );
+        };
+    };
+
+    // ===================== ANIMACIÓN BOTONES =====================
+    document.querySelectorAll('.map-btn, .card button').forEach(btn => {
+        btn.addEventListener('mouseenter', () => btn.style.transform = 'scale(1.05)');
+        btn.addEventListener('mouseleave', () => btn.style.transform = 'scale(1)');
     });
-}
 
-// ===================== CONFETTI =====================
-function lanzarConfetti() {
-    const confettiCount = 100;
-    for(let i=0;i<confettiCount;i++){
-        const confetti = document.createElement('div');
-        confetti.style.position = 'fixed';
-        confetti.style.width = '8px';
-        confetti.style.height = '8px';
-        confetti.style.background = `hsl(${Math.random()*360}, 80%, 60%)`;
-        confetti.style.top = '-10px';
-        confetti.style.left = `${Math.random()*100}vw`;
-        confetti.style.opacity = 0.9;
-        confetti.style.borderRadius = '50%';
-        confetti.style.zIndex = 999;
-        document.body.appendChild(confetti);
-
-        // Animación caída
-        confetti.animate([
-            { transform: `translateY(0px) rotate(0deg)` },
-            { transform: `translateY(${window.innerHeight + 50}px) rotate(${Math.random()*720}deg)` }
-        ], {
-            duration: 3000 + Math.random()*2000,
-            iterations: 1,
-            easing: 'ease-out'
-        });
-
-        setTimeout(() => confetti.remove(), 5000);
-    }
-}
-
-// ===================== ANIMACIÓN BOTONES =====================
-document.querySelectorAll('.map-btn, .card button').forEach(btn => {
-    btn.addEventListener('mouseenter', () => btn.style.transform = 'scale(1.08)');
-    btn.addEventListener('mouseleave', () => btn.style.transform = 'scale(1)');
 });
